@@ -15,4 +15,5 @@ app.use(userRouter);
 
 app.use(errorMiddleware);
 
+// eslint-disable-next-line no-console
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
