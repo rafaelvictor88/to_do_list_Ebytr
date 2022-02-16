@@ -1,13 +1,13 @@
 const connection = require('./connection');
 
-const createUserModel = async ({ name, email }) => {
+const createUser = async ({ name, email, password }) => {
   const connect = await connection();
 
-  const response = await connect.collection('users').insertOne({ name, email });
+  const response = await connect.collection('users').insertOne({ name, email, password });
 
   return response;
 };
 
 module.exports = {
-  createUserModel,
+  createUser,
 };
