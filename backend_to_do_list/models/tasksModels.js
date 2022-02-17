@@ -1,12 +1,20 @@
 const { ObjectId } = require('mongodb');
 const connection = require('./connection');
 
-const createTask = async (task) => {
+const createTask = async (task, user) => {
   const connect = await connection();
 
-  const newTask = await connect.collection('tasks').insertOne({ task, status: 'pendente' });
+  const newTask = await connect.collection('tasks').insertOne({ task, status: 'pendente', user });
 
   return newTask;
+};
+
+const getTaskById = async (taskId) => {
+  const connect = await connection();
+
+  const taskFound = await connect.collection('tasks').findOne({ _id: ObjectId(taskId) });
+
+  return taskFound;
 };
 
 const listAllTasks = async () => {
@@ -41,4 +49,5 @@ module.exports = {
   listAllTasks,
   editTaskById,
   deleteTaskById,
+  getTaskById,
 };

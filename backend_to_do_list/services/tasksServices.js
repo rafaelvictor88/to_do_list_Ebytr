@@ -1,7 +1,12 @@
 const models = require('../models/tasksModels');
+const validations = require('./validations/tasksValidations');
 
-const createTask = async (task, token) => {
-  const newTask = await models.createTask(task, token);
+const createTask = async (task, user) => {
+  const response = await models.createTask(task, user);
+
+  validations.newTaskValidation(response.acknowledged);
+
+  const newTask = await models.getTaskById(response.insertedId);
 
   return newTask;
 };

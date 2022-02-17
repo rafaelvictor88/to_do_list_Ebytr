@@ -1,9 +1,10 @@
 const express = require('express');
 const controllers = require('../controllers/tasksControllers');
+const authorizations = require('../auth/authorization');
 
 const tasksRouters = express();
 
-tasksRouters.post('/tasks', controllers.createTask);
+tasksRouters.post('/tasks', authorizations.authCreateTask, controllers.createTask);
 
 tasksRouters.get('/tasks', controllers.listAllTasks);
 

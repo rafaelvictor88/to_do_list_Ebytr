@@ -2,7 +2,7 @@ const services = require('../services/tasksServices');
 
 const createTask = async (req, res, next) => {
   try {
-    const newTask = await services.createTask(req.body, req.headers);
+    const newTask = await services.createTask(req.body, req.user);
 
     return res.status(201).json(newTask);
   } catch (error) {
