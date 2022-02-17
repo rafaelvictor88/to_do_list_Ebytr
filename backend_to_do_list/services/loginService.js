@@ -2,17 +2,23 @@ const models = require('../models/loginModel');
 const { notFound } = require('../utils/statusCode');
 const validations = require('./validations/loginValidations');
 const errorHandler = require('../middlewares/errorHandler');
+const { tokenGenerator } = require('../auth/tokenGenerator');
 
 const loginUser = async (body) => {
   const { email, password } = body;
 
   validations.loginValidation(email, password);
 
-  const response = await models.loginUser(body);
+  const userFound = await models.loginUser(body);
 
-  if (!response) throw errorHandler(notFound, { message: 'Usuário não encontrado!' });
+  if (!userFound) throw errorHandler(notFound, { message: 'Usuário não encontrado!' });
 
-  return response;
+  // eslint-disable-next-line no-unused-vars
+  const { password: _password, ...userWithoutPassword } = userFound;
+
+  const token = await tokenGenerator(userWithoutPassword);
+
+  return { token };
 };
 
 module.exports = { loginUser };
